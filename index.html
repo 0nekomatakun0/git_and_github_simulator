@@ -680,147 +680,365 @@ body {
 .ac-hint { color: var(--text3); margin-left: auto; font-size: 11px; }
 
 /* =============================================
-   右：GitHubエリア
+   右：GitHubエリア — GitHub.com 風デザイン
    ============================================= */
+
+/* GitHub の配色変数 */
+:root {
+  --gh-bg:        #0d1117;   /* ページ背景 */
+  --gh-surface:   #161b22;   /* カード背景 */
+  --gh-border:    #30363d;   /* ボーダー */
+  --gh-border2:   #21262d;   /* 薄いボーダー */
+  --gh-text:      #e6edf3;   /* 主テキスト */
+  --gh-text2:     #8b949e;   /* 副テキスト */
+  --gh-text3:     #484f58;   /* ヒントテキスト */
+  --gh-green:     #3fb950;   /* 追加・成功 */
+  --gh-green-bg:  #1a4720;
+  --gh-blue:      #58a6ff;   /* リンク */
+  --gh-blue-bg:   #1f3a5f;
+  --gh-purple:    #bc8cff;
+  --gh-purple-bg: #2d1f4e;
+  --gh-orange:    #ffa657;
+  --gh-accent:    #238636;   /* ボタン緑 */
+}
+
 #github-area {
-  background: white;
-  border-left: 2px solid var(--sand);
+  background: var(--gh-bg);
+  border-left: 1px solid var(--gh-border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  font-family: var(--mono); /* GitHub はモノスペース多用 */
 }
 
-#github-header {
-  background: linear-gradient(135deg, #1c1b2e 0%, #24233a 100%);
-  padding: 14px 16px;
-  flex-shrink: 0;
+/* ---- トップバー（github.com のナビ風） ---- */
+#github-topbar {
+  background: var(--gh-surface);
+  border-bottom: 1px solid var(--gh-border);
+  padding: 0 12px;
+  height: 44px;
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.github-logo {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: white;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
   flex-shrink: 0;
 }
 
-.github-repo-name {
-  font-size: 13px;
+.gh-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+/* Octocatシルエット（SVG） */
+.gh-octocat {
+  width: 22px; height: 22px;
+  fill: var(--gh-text);
+  flex-shrink: 0;
+}
+
+.gh-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gh-text2);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.gh-breadcrumb .owner { color: var(--gh-blue); }
+.gh-breadcrumb .sep   { color: var(--gh-text3); }
+.gh-breadcrumb .repo  { color: var(--gh-text); font-weight: 700; }
+
+.gh-star-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  background: var(--gh-surface);
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+  color: var(--gh-text);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: default;
+  flex-shrink: 0;
+}
+
+/* ---- リポジトリ情報バー ---- */
+#gh-repo-bar {
+  background: var(--gh-bg);
+  border-bottom: 1px solid var(--gh-border);
+  padding: 10px 12px 0;
+  flex-shrink: 0;
+}
+
+.gh-repo-desc {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--gh-text2);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* GitHub タブ風 */
+.gh-tabs {
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+}
+
+.gh-tab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gh-text2);
+  border-bottom: 2px solid transparent;
+  cursor: default;
+  white-space: nowrap;
+}
+.gh-tab.active {
+  color: var(--gh-text);
+  border-bottom-color: #f78166;
+}
+.gh-tab-count {
+  background: var(--gh-border);
+  color: var(--gh-text2);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 20px;
+}
+
+/* ---- メインボディ ---- */
+.github-body {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--gh-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ---- ブランチ・クローンバー ---- */
+#gh-branch-bar {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--gh-border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gh-bg);
+  flex-shrink: 0;
+}
+
+.gh-branch-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: var(--gh-surface);
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+  color: var(--gh-text);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: default;
+}
+
+.gh-commit-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gh-text2);
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.gh-commit-count strong { color: var(--gh-text); }
+
+/* ---- ファイルテーブル（GitHub のファイル一覧） ---- */
+#gh-file-table-wrap {
+  margin: 0 12px 10px;
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--gh-surface);
+  flex-shrink: 0;
+}
+
+.gh-table-header {
+  padding: 8px 12px;
+  background: var(--gh-surface);
+  border-bottom: 1px solid var(--gh-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gh-latest-commit-msg {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gh-text);
+  font-weight: 600;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gh-latest-commit-time {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--gh-text2);
+  flex-shrink: 0;
+}
+
+.gh-file-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--gh-border2);
+  font-family: var(--mono);
+  font-size: 12px;
+  animation: ghRowIn 0.25s ease both;
+  transition: background 0.1s;
+}
+.gh-file-row:last-child { border-bottom: none; }
+.gh-file-row:hover { background: rgba(255,255,255,0.03); }
+
+@keyframes ghRowIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.gh-file-icon { font-size: 13px; flex-shrink: 0; }
+.gh-file-name { color: var(--gh-blue); flex: 1; }
+.gh-file-commit-msg { color: var(--gh-text2); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; }
+.gh-file-time { color: var(--gh-text3); font-size: 10px; flex-shrink: 0; }
+
+/* ---- コミット履歴エリア ---- */
+#gh-commits-section {
+  margin: 0 12px 12px;
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--gh-surface);
+}
+
+.gh-commits-header {
+  padding: 8px 12px;
+  background: var(--gh-surface);
+  border-bottom: 1px solid var(--gh-border);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gh-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gh-commit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--gh-border2);
+  animation: ghRowIn 0.3s ease both;
+  transition: background 0.1s;
+}
+.gh-commit-row:last-child { border-bottom: none; }
+.gh-commit-row:hover { background: rgba(255,255,255,0.03); }
+
+.gh-commit-avatar {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3fb950, #58a6ff);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
   font-weight: 800;
   color: white;
 }
 
-.github-url {
-  font-size: 10px;
-  color: rgba(255,255,255,0.45);
+.gh-commit-info { flex: 1; min-width: 0; }
+.gh-commit-subject {
   font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gh-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gh-commit-meta {
+  font-family: var(--font);
+  font-size: 10px;
+  color: var(--gh-text2);
   margin-top: 1px;
 }
 
-.github-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* リモートファイル */
-.remote-section-title {
+.gh-commit-hash-pill {
+  font-family: var(--mono);
   font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  color: var(--gh-blue);
+  background: var(--gh-blue-bg);
+  border: 1px solid rgba(88,166,255,0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  cursor: default;
 }
 
-.remote-file-item {
+/* ---- 空状態 ---- */
+.gh-empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--gh-text3);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.8;
+}
+.gh-empty-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.35; display: block; }
+
+/* ---- 同期バッジ（上部） ---- */
+#sync-badge {
+  margin: 10px 12px 0;
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 8px;
+  padding: 6px 10px;
   border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--cream);
-  border: 1px solid var(--sand);
-  animation: pullIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-@keyframes pullIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-/* リモートコミット */
-.remote-commit {
-  background: var(--cream);
-  border: 1px solid var(--sand);
-  border-radius: 8px;
-  padding: 8px 10px;
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  animation: pullIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-.remote-commit-dot {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  background: var(--purple-bg);
-  border: 2px solid var(--purple);
-  flex-shrink: 0;
-  margin-top: 1px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px;
-  color: var(--purple);
-  font-weight: 800;
-}
-
-.remote-commit-msg {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.3;
-}
-.remote-commit-hash {
-  font-size: 10px;
-  font-family: var(--mono);
-  color: var(--text3);
-  margin-top: 2px;
-}
-
-.empty-remote {
-  text-align: center;
-  padding: 30px 16px;
-  color: var(--text3);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.7;
-}
-.empty-remote .cloud-icon { font-size: 36px; margin-bottom: 8px; opacity: 0.4; }
-
-/* 同期バッジ */
-.sync-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 20px;
+  font-family: var(--font);
   font-size: 11px;
   font-weight: 700;
+  border: 1px solid;
 }
-.sync-unsynced { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
-.sync-synced   { background: var(--green-bg); color: var(--green2); border: 1px solid #86efac; }
+.sync-unsynced {
+  background: rgba(248,81,73,0.1);
+  color: #f85149;
+  border-color: rgba(248,81,73,0.3);
+}
+.sync-synced {
+  background: var(--gh-green-bg);
+  color: var(--gh-green);
+  border-color: rgba(63,185,80,0.3);
+}
+
+@keyframes pullIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
 
 /* =============================================
    アニメーションレイヤー
@@ -1047,44 +1265,84 @@ button { cursor: pointer; }
 
   </div><!-- /local-area -->
 
-  <!-- ============ 右：GitHubエリア ============ -->
+  <!-- ============ 右：GitHubエリア（GitHub.com 風） ============ -->
   <div id="github-area">
-    <div id="github-header">
-      <div class="github-logo">🐙</div>
-      <div>
-        <div class="github-repo-name">my-project</div>
-        <div class="github-url">github.com/you/my-project</div>
+
+    <!-- GitHub トップナビ風バー -->
+    <div id="github-topbar">
+      <!-- Octocat SVG ロゴ -->
+      <svg class="gh-octocat" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      <div class="gh-breadcrumb">
+        <span class="owner">you</span>
+        <span class="sep">/</span>
+        <span class="repo">my-project</span>
+      </div>
+      <div class="gh-star-btn">⭐ Star</div>
+    </div>
+
+    <!-- リポジトリ情報バー（タブ） -->
+    <div id="gh-repo-bar">
+      <div class="gh-repo-desc">Git シミュレーター用リポジトリ 🌱</div>
+      <div class="gh-tabs">
+        <div class="gh-tab active">
+          📄 Code
+          <span class="gh-tab-count" id="gh-file-count">0</span>
+        </div>
+        <div class="gh-tab">
+          ◈ Commits
+          <span class="gh-tab-count" id="gh-commit-count">0</span>
+        </div>
+        <div class="gh-tab">⎇ Branches <span class="gh-tab-count">1</span></div>
       </div>
     </div>
 
+    <!-- スクロール可能なボディ -->
     <div class="github-body">
 
-      <!-- 同期状態 -->
+      <!-- 同期バッジ -->
       <div id="sync-badge" class="sync-badge sync-unsynced">
-        <span>⬡</span> まだ接続されていません
+        <span>●</span> まだ push されていません
       </div>
 
-      <!-- リモートファイル -->
-      <div>
-        <div class="remote-section-title">
-          <span>📁</span> ファイル
+      <!-- ブランチ＋コミット数バー -->
+      <div id="gh-branch-bar" style="display:none">
+        <div class="gh-branch-btn">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="var(--gh-text2)"><path d="M11.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122V6A2.5 2.5 0 019 8.5H7a1 1 0 00-1 1v1.128a2.251 2.251 0 11-1.5 0V5.372a2.25 2.25 0 111.5 0v1.836A2.492 2.492 0 017 7h2a1 1 0 001-1v-.628A2.25 2.25 0 019.5 3.25zM4.25 12a.75.75 0 100 1.5.75.75 0 000-1.5zM3.5 3.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0z"/></svg>
+          <span id="gh-branch-name">main</span>
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="var(--gh-text2)"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
         </div>
-        <div id="remote-files">
-          <div class="empty-remote">
-            <div class="cloud-icon">☁️</div>
-            <div>git push すると<br>ここにファイルが表示されます</div>
-          </div>
+        <div class="gh-commit-count">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="var(--gh-text2)"><path d="M11.93 8.5a4.002 4.002 0 01-7.86 0H.75a.75.75 0 010-1.5h3.32a4.002 4.002 0 017.86 0h3.32a.75.75 0 010 1.5h-3.32zm-1.43-.75a2.5 2.5 0 10-5 0 2.5 2.5 0 005 0z"/></svg>
+          <strong id="gh-commit-num">0</strong> commits
         </div>
       </div>
 
-      <!-- リモートコミット履歴 -->
-      <div>
-        <div class="remote-section-title">
-          <span>◈</span> コミット履歴
+      <!-- ファイルテーブル -->
+      <div id="gh-file-table-wrap" style="display:none">
+        <div class="gh-table-header">
+          <div class="gh-commit-avatar" id="gh-avatar">Y</div>
+          <div class="gh-latest-commit-msg" id="gh-latest-msg">—</div>
+          <div class="gh-latest-commit-time" id="gh-latest-time">just now</div>
         </div>
-        <div id="remote-commits">
-          <div style="color:var(--text3);font-size:11px;font-weight:600;">pushされたコミットなし</div>
+        <div id="remote-files"></div>
+      </div>
+
+      <!-- 空状態（push前） -->
+      <div id="gh-empty-state" class="gh-empty">
+        <span class="gh-empty-icon">🐙</span>
+        <strong style="color:var(--gh-text2);display:block;margin-bottom:4px;">このリポジトリは空です</strong>
+        <span style="color:var(--gh-text3)">git push すると<br>ファイルがここに表示されます</span>
+      </div>
+
+      <!-- コミット履歴 -->
+      <div id="gh-commits-section" style="display:none">
+        <div class="gh-commits-header">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="var(--gh-text2)"><path d="M11.93 8.5a4.002 4.002 0 01-7.86 0H.75a.75.75 0 010-1.5h3.32a4.002 4.002 0 017.86 0h3.32a.75.75 0 010 1.5h-3.32zm-1.43-.75a2.5 2.5 0 10-5 0 2.5 2.5 0 005 0z"/></svg>
+          Commits
         </div>
+        <div id="remote-commits"></div>
       </div>
 
     </div>
@@ -1379,47 +1637,102 @@ function createCommitNode(commit, isHead, isBranch = false) {
   return node;
 }
 
-/* リモートエリア */
+/* リモートエリア — GitHub.com 風レンダリング */
 function renderRemote() {
-  const filesEl = document.getElementById('remote-files');
-  const commitsEl = document.getElementById('remote-commits');
-  const badge = document.getElementById('sync-badge');
+  const filesEl    = document.getElementById('remote-files');
+  const commitsEl  = document.getElementById('remote-commits');
+  const badge      = document.getElementById('sync-badge');
+  const branchBar  = document.getElementById('gh-branch-bar');
+  const tableWrap  = document.getElementById('gh-file-table-wrap');
+  const emptyState = document.getElementById('gh-empty-state');
+  const commitsSection = document.getElementById('gh-commits-section');
+
+  // タブカウント更新
+  document.getElementById('gh-file-count').textContent   = S.remoteFiles.size;
+  document.getElementById('gh-commit-count').textContent = S.remoteCommits.length;
+  document.getElementById('gh-branch-name').textContent  = S.currentBranch;
+  document.getElementById('gh-commit-num').textContent   = S.remoteCommits.length;
 
   if (S.remoteFiles.size === 0) {
-    filesEl.innerHTML = `<div class="empty-remote">
-      <div class="cloud-icon">☁️</div>
-      <div>git push すると<br>ここにファイルが表示されます</div>
-    </div>`;
-    commitsEl.innerHTML = `<div style="color:var(--text3);font-size:11px;font-weight:600;">pushされたコミットなし</div>`;
+    // push前：空状態
     badge.className = 'sync-badge sync-unsynced';
-    badge.innerHTML = '<span>⬡</span> まだ接続されていません';
-  } else {
-    filesEl.innerHTML = '';
-    [...S.remoteFiles].forEach(name => {
-      const d = document.createElement('div');
-      d.className = 'remote-file-item';
-      d.innerHTML = `<span>${getFileIcon(name)}</span>${name}`;
-      filesEl.appendChild(d);
-    });
-
-    commitsEl.innerHTML = '';
-    [...S.remoteCommits].reverse().forEach((c, i) => {
-      const d = document.createElement('div');
-      d.className = 'remote-commit';
-      d.style.animationDelay = `${i * 0.04}s`;
-      d.innerHTML = `
-        <div class="remote-commit-dot">${(i+1)}</div>
-        <div>
-          <div class="remote-commit-msg">${c.message}</div>
-          <div class="remote-commit-hash">${shortHash(c.hash)}</div>
-        </div>
-      `;
-      commitsEl.appendChild(d);
-    });
-
-    badge.className = 'sync-badge sync-synced';
-    badge.innerHTML = '<span>✓</span> GitHubと同期済み';
+    badge.innerHTML = '<span style="font-size:8px">●</span> まだ push されていません';
+    badge.style.display = 'flex';
+    branchBar.style.display  = 'none';
+    tableWrap.style.display  = 'none';
+    emptyState.style.display = 'block';
+    commitsSection.style.display = 'none';
+    return;
   }
+
+  // push後：GitHub 本物に近い表示
+  badge.className = 'sync-badge sync-synced';
+  badge.innerHTML = '<span style="font-size:8px">●</span> GitHubと同期済み';
+  badge.style.display = 'flex';
+  branchBar.style.display  = 'flex';
+  tableWrap.style.display  = 'block';
+  emptyState.style.display = 'none';
+  commitsSection.style.display = 'block';
+
+  // 最新コミット情報をテーブルヘッダーに
+  const latestCommit = S.remoteCommits[S.remoteCommits.length - 1];
+  if (latestCommit) {
+    document.getElementById('gh-latest-msg').textContent  = latestCommit.message;
+    document.getElementById('gh-latest-time').textContent = 'just now';
+  }
+
+  // ファイルテーブル（GitHub のファイル一覧と同じ行構造）
+  filesEl.innerHTML = '';
+  // フォルダを先に、ファイルを後に
+  const sorted = [...S.remoteFiles].sort((a, b) => {
+    const aIsDir = a.endsWith('/');
+    const bIsDir = b.endsWith('/');
+    if (aIsDir && !bIsDir) return -1;
+    if (!aIsDir && bIsDir) return 1;
+    return a.localeCompare(b);
+  });
+
+  sorted.forEach((name, i) => {
+    const row = document.createElement('div');
+    row.className = 'gh-file-row';
+    row.style.animationDelay = `${i * 0.03}s`;
+    const commitForFile = [...S.remoteCommits].reverse().find(c => c.files.includes(name));
+    row.innerHTML = `
+      <span class="gh-file-icon">${name.endsWith('/') ? '📁' : ghFileIcon(name)}</span>
+      <span class="gh-file-name">${name}</span>
+      <span class="gh-file-commit-msg">${commitForFile ? commitForFile.message : '—'}</span>
+      <span class="gh-file-time">just now</span>
+    `;
+    filesEl.appendChild(row);
+  });
+
+  // コミット履歴（新しい順）
+  commitsEl.innerHTML = '';
+  [...S.remoteCommits].reverse().forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'gh-commit-row';
+    row.style.animationDelay = `${i * 0.04}s`;
+    row.innerHTML = `
+      <div class="gh-commit-avatar">Y</div>
+      <div class="gh-commit-info">
+        <div class="gh-commit-subject">${c.message}</div>
+        <div class="gh-commit-meta">you committed · just now</div>
+      </div>
+      <div class="gh-commit-hash-pill">${shortHash(c.hash)}</div>
+    `;
+    commitsEl.appendChild(row);
+  });
+}
+
+/* GitHub 用ファイルアイコン（色なし・シンプル） */
+function ghFileIcon(name) {
+  if (name.endsWith('.html')) return '🌐';
+  if (name.endsWith('.css'))  return '🎨';
+  if (name.endsWith('.js'))   return '⚡';
+  if (name.endsWith('.md'))   return '📝';
+  if (name.endsWith('.json')) return '📋';
+  if (name.endsWith('.py'))   return '🐍';
+  return '📄';
 }
 
 /* ステップナビ */
