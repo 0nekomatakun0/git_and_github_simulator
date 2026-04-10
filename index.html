@@ -1135,6 +1135,181 @@ body {
 }
 
 button { cursor: pointer; }
+
+/* =============================================
+   モバイル用タブ切り替えバー
+   （スマホのみ表示、PCでは非表示）
+   ============================================= */
+#mobile-tab-bar {
+  display: none; /* PCでは隠す */
+}
+
+/* =============================================
+   レスポンシブ — 767px 以下（スマホ）
+   ============================================= */
+@media (max-width: 767px) {
+
+  /* body を縦スクロール可能にする */
+  body {
+    height: 100dvh;          /* dynamic viewport height（アドレスバー考慮） */
+    overflow: hidden;
+  }
+
+  /* ---- ヘッダーをコンパクトに ---- */
+  #header {
+    padding: 0 12px;
+    height: 48px;
+    gap: 8px;
+  }
+
+  /* ロゴテキストを隠してバッジだけ残す */
+  .logo span, .logo > :not(.logo-badge) { display: none; }
+  .logo-badge { margin: 0; }
+
+  /* ステップナビ：テキストを消して数字ドットだけ */
+  #step-nav {
+    flex: 1;
+    gap: 4px;
+    overflow: hidden;
+  }
+  .step-arrow { display: none; }
+  .step-pill {
+    padding: 3px 7px;
+    font-size: 10px;
+    gap: 3px;
+    flex-shrink: 1;
+  }
+  /* ステップラベル文字を隠す（数字バッジだけ残す） */
+  .step-pill > :not(.step-num) { display: none; }
+
+  #header-divider { display: none; }
+
+  #mode-btn {
+    font-size: 11px;
+    padding: 4px 9px;
+    flex-shrink: 0;
+  }
+
+  /* ---- メインを縦1カラムに変更 ---- */
+  #main {
+    grid-template-columns: 1fr;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ローカルエリアとGitHubエリアを重ねてタブで切り替え */
+  #local-area,
+  #github-area {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  /* 非アクティブタブは隠す */
+  #local-area.tab-hidden,
+  #github-area.tab-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(12px);
+  }
+
+  /* ローカルエリアの縦レイアウト調整 */
+  #local-area {
+    padding: 10px 10px 0;
+    gap: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* CLIが固定されるよう下にpadding */
+    padding-bottom: 120px;
+  }
+
+  /* エクスプローラーの高さを少し縮める */
+  #file-explorer { max-height: 200px; }
+
+  /* タイムラインはそのまま（横スクロール維持） */
+  #timeline-canvas { min-height: 80px; }
+
+  /* ---- CLIを画面下部に固定 ---- */
+  #cli-wrapper {
+    position: fixed;
+    bottom: 48px;   /* タブバーの上 */
+    left: 0; right: 0;
+    padding: 0 10px 4px;
+    background: var(--cream);
+    border-top: 1.5px solid var(--sand);
+    z-index: 30;
+    /* PCではhidden扱い外のネスト内にあるが、スマホでは全面に浮かせる */
+  }
+
+  /* CLIログを短くする */
+  #cli-log { max-height: 60px; }
+
+  /* GitHub エリアはスクロール可能に */
+  #github-area {
+    overflow-y: auto;
+    border-left: none;
+    border-top: 1px solid var(--gh-border);
+  }
+  .github-body { overflow-y: visible; } /* 親がスクロール */
+
+  /* ---- モバイルタブバー（画面最下部） ---- */
+  #mobile-tab-bar {
+    display: flex;        /* スマホで表示 */
+    height: 48px;
+    background: white;
+    border-top: 1.5px solid var(--sand);
+    flex-shrink: 0;
+    z-index: 40;
+    position: relative;  /* fixed不要、gridの最後の行に自然に入る */
+  }
+
+  .mob-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text3);
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    border-top: 2px solid transparent;
+    margin-top: -2px; /* border-topをバーのtopに重ねる */
+  }
+  .mob-tab.active {
+    color: var(--blue);
+    border-top-color: var(--blue);
+  }
+  .mob-tab-icon { font-size: 16px; line-height: 1; }
+
+  /* bodyのgridにタブバーの行を追加 */
+  body {
+    grid-template-rows: 48px 1fr auto;
+  }
+
+  /* ガイドパネルを少し縮める */
+  #guide-panel { padding: 10px; }
+  .guide-icon { width: 30px; height: 30px; font-size: 15px; }
+  .guide-title { font-size: 13px; }
+  .guide-desc { font-size: 11px; }
+}
+
+/* =============================================
+   タブレット（768〜1023px）：少しだけ調整
+   ============================================= */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #main { grid-template-columns: 1fr 240px; }
+
+  /* ステップラベルを短く */
+  .step-pill { font-size: 10px; padding: 3px 8px; }
+  .step-arrow { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1349,6 +1524,20 @@ button { cursor: pointer; }
   </div>
 
 </div><!-- /main -->
+
+<!-- =============================================
+     モバイル用タブバー（スマホのみ表示）
+     ============================================= -->
+<div id="mobile-tab-bar">
+  <button class="mob-tab active" id="mob-tab-local" onclick="switchMobileTab('local')">
+    <span class="mob-tab-icon">💻</span>
+    あなたのPC
+  </button>
+  <button class="mob-tab" id="mob-tab-github" onclick="switchMobileTab('github')">
+    <span class="mob-tab-icon">🐙</span>
+    GitHub
+  </button>
+</div>
 
 <!-- =============================================
      JavaScript
@@ -1953,6 +2142,7 @@ async function cmdPush() {
   } else {
     toast('🚀 pushしました！');
   }
+  setTimeout(() => autoSwitchToGithub(), 600);
 
   if (S.tutorialStep === 3) S.tutorialStep = 4;
   snapshot(); render();
@@ -1978,6 +2168,7 @@ async function cmdPull() {
   }
 
   log('ok', '✓ GitHubから最新の変更を取得しました');
+  setTimeout(() => { if (window.innerWidth <= 767) switchMobileTab('local'); }, 500);
   snapshot(); render();
   toast('⬇️ pullしました！');
 }
@@ -2331,6 +2522,36 @@ document.addEventListener('click', e => {
 });
 
 /* =============================================
+   モバイルタブ切り替え
+   ============================================= */
+let _mobileTab = 'local';
+
+function switchMobileTab(tab) {
+  _mobileTab = tab;
+  const localEl  = document.getElementById('local-area');
+  const ghEl     = document.getElementById('github-area');
+  const tabLocal = document.getElementById('mob-tab-local');
+  const tabGh    = document.getElementById('mob-tab-github');
+
+  if (tab === 'local') {
+    localEl.classList.remove('tab-hidden');
+    ghEl.classList.add('tab-hidden');
+    tabLocal.classList.add('active');
+    tabGh.classList.remove('active');
+  } else {
+    ghEl.classList.remove('tab-hidden');
+    localEl.classList.add('tab-hidden');
+    tabLocal.classList.remove('active');
+    tabGh.classList.add('active');
+  }
+}
+
+// push/pull後にGitHubタブへ自動ジャンプ（スマホのみ）
+function autoSwitchToGithub() {
+  if (window.innerWidth <= 767) switchMobileTab('github');
+}
+
+/* =============================================
    モード切替
    ============================================= */
 function toggleMode() {
@@ -2351,6 +2572,12 @@ document.getElementById('cli-input').focus();
 log('info', 'Git 体験シミュレーターへようこそ！');
 log('hint', 'まず「git init」と入力して Enter を押してみてください');
 log('hint', 'Tab キーでコマンド補完、↑↓キーで履歴参照ができます');
+
+// スマホ：CLIをbody直下に移動して固定表示
+if (window.innerWidth <= 767) {
+  const cli = document.getElementById('cli-wrapper');
+  document.body.appendChild(cli);
+}
 </script>
 </body>
 </html>
